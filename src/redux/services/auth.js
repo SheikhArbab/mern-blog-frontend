@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['users'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://mern-blog-server-alpha.vercel.app/',
+    baseUrl: 'https://mern-blog-server-olive.vercel.app/',
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
