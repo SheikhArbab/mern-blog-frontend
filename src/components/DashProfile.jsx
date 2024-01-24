@@ -5,9 +5,14 @@ import { Label, TextInput, Button, Spinner } from 'flowbite-react';
 import { BiSolidShow, BiSolidHide, BiCamera } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 import { useUpdateUserMutation } from '../redux/services/auth'
+import { currentUser } from '../redux/features/authSlice'
+import { useDispatch } from 'react-redux';
 
 const DashProfile = () => {
   const { user } = useSelector((state) => state.auth);
+
+
+  const dispatch = useDispatch()
 
   const [showPass, setShowPass] = useState(false);
 
@@ -42,8 +47,8 @@ const DashProfile = () => {
       }
 
       try {
-        const res = await updateUser({ updateData: formValues, userId: user._id });
-        console.log(formValues);
+        await updateUser({ updateData: formValues, userId: user._id });
+
       } catch (error) {
         console.error('Error during form submission:', error);
       }
@@ -78,7 +83,7 @@ const DashProfile = () => {
         />
 
         <figure
-          className="w-32 h-32 self-center cursor-pointer shadow-md overflow-hidden rounded-full relative group"
+          className="w-32 h-32 md:w-52 md:h-52 self-center cursor-pointer shadow-md overflow-hidden rounded-full relative group"
           onClick={() => fileRef.current.click()}
         >
           <img
@@ -86,8 +91,10 @@ const DashProfile = () => {
             alt="user"
             className="rounded-full w-full h-full border-4 border-purple-900 object-cover"
           />
-          <div className='duration-300 transition-all opacity-0 group-hover:opacity-100 w-full bg-black/80 absolute top-0 left-0 h-full border-4 border-purple-900 rounded-full' />
-          <BiCamera size={'40px'} className='duration-300 transition-all opacity-0 group-hover:opacity-100 absolute top-[52%] left-[50%] -translate-x-[50%] -translate-y-[50%]' />
+          <div className='duration-300 transition-all opacity-0 group-hover:opacity-100 w-full bg-black/70 absolute top-0 left-0 h-full border-4 border-purple-900 rounded-full' />
+          <BiCamera size={'40%'}
+            color='white'
+            className=' duration-300 transition-all opacity-0 group-hover:opacity-100 absolute top-[52%] left-[50%] -translate-x-[50%] -translate-y-[50%]' />
         </figure>
 
         <div className="w-100 h-20">
@@ -161,7 +168,7 @@ const DashProfile = () => {
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span className='cursor-pointer'>Delete Account</span>
-        <span className='cursor-pointer'>Sign Out</span>
+        <span className='cursor-pointer' onClick={() => dispatch(currentUser({ user: '', token: '' }))}>Sign Out</span>
       </div>
     </div>
   );

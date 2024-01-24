@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['users'],
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/blogger/',
+    baseUrl: 'https://mern-blog-server-alpha.vercel.app/',
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
@@ -22,20 +22,24 @@ export const authApi = createApi({
     }),
     signout: builder.mutation({
       query: () => ({
-        url: 'auth/signout',
+        url: 'sign-out',
         method: 'GET',
       }),
     }),
     createUser: builder.mutation({
-      query: (newUser) => ({
-        url: 'sign-up',
-        method: 'POST',
-        body: newUser,
-      }),
+      query: (newUser) => { 
+        return {
+          url: `sign-up`,
+          method: 'POST',
+          body: newUser,
+        };
+      },
+      invalidatesTags: ['users'],
     }),
+
     updateUser: builder.mutation({
       query: ({ userId, updateData }) => {
- 
+
         return {
           url: `update/${userId}`,
           method: 'PUT',
@@ -57,15 +61,15 @@ export const authApi = createApi({
         method: 'POST',
         body: googleUser,
       }),
-    }), 
+    }),
   }),
 });
 
 export const {
   useCreateUserMutation,
   useUserMutation,
-  useGoogleUserMutation, 
+  useGoogleUserMutation,
   useDeleteUserMutation,
-  useUpdateUserMutation, 
+  useUpdateUserMutation,
   useSignoutMutation
 } = authApi;

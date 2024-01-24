@@ -34,7 +34,7 @@ const SignUp = () => {
     onSubmit: async (formValues) => {
       try {
         const res = await createUser(formValues);
-
+console.log(res);
         if (res.error && res.error.data && res.error.data.message) {
           setAnyRes(res.error.data.message);
         } else if (res.data && res.data.message) {
