@@ -7,15 +7,15 @@ import { useSelector } from 'react-redux';
 import { useUpdateUserMutation } from '../redux/services/auth'
 import { currentUser } from '../redux/features/authSlice'
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const DashProfile = () => {
   const { user } = useSelector((state) => state.auth);
 
-
   const dispatch = useDispatch()
 
   const [showPass, setShowPass] = useState(false);
-
+ 
   const fileRef = useRef(null);
 
 
@@ -165,6 +165,21 @@ const DashProfile = () => {
           {isLoading ? <Spinner color={'purple'} /> : "Update"}
 
         </Button>
+
+        {
+          user.IsAdmin &&
+          <Link to={'create-post'}>
+            <Button
+              type='button'
+              className={` mt-4  w-full h-10`}
+              gradientDuoTone={'purpleToPink'}
+            >
+              {isLoading ? <Spinner color={'purple'} /> : "Create a post"}
+
+            </Button>
+          </Link>
+        }
+
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span className='cursor-pointer'>Delete Account</span>

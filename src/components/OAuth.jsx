@@ -31,8 +31,8 @@ const OAuth = () => {
             }
 
             const { data } = await googleUser(userData)
-            const { user, token } = data
-            dispatch(currentUser({ user, token }))
+            const { payload, token } = data
+            dispatch(currentUser({ user:payload, token }))
             naviagte('/dashboard')
 
         } catch (error) {

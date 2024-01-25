@@ -1,6 +1,6 @@
 import React from 'react'
-import { RootLayout,PrivateLayout } from './layout/index';
-import { Home, About, Dashboard, SignIn, SignUp, Projects } from './pages/index';
+import { RootLayout, PrivateLayout, AdminLayout } from './layout/index';
+import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost } from './pages/index';
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
 
 const App = () => {
@@ -17,7 +17,13 @@ const App = () => {
 
         <Route element={<PrivateLayout />} >
 
-        <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route element={<AdminLayout />} >
+
+            <Route path="/dashboard/create-post" element={<CreatePost />} />
+
+          </Route>
 
         </Route>
 

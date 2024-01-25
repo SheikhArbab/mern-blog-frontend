@@ -35,6 +35,7 @@ const SignIn = () => {
     onSubmit: async (formValues) => {
       try {
         const res = await loginUser(formValues);
+ 
 
         if (res.error && res.error.data && res.error.data.message) {
           setAnyRes(res.error.data.message);
@@ -42,9 +43,9 @@ const SignIn = () => {
 
           setAnyRes(res.data.message);
           
-          const { token, user } = res.data
+          const { token, payload } = res.data
           
-          dispatch(currentUser({ user, token }))
+          dispatch(currentUser({ user:payload, token }))
           setTimeout(() => {
             navigate('/')
           }, 1500);

@@ -27,3 +27,11 @@
     background-color: purple;
     color: white;
 }
+
+body{
+  height: 100dvh;
+}
+.ql-editor{
+  font-size: 1.05rem;
+  
+}

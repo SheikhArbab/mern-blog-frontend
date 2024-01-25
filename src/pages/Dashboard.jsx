@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
-import { DashSidebar, DashProfile } from '../components/index'
+import { DashSidebar, DashProfile,DashPosts } from '../components/index'
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
 
   const location = useLocation()
+
+  const {user} = useSelector(state => state.auth)
 
   const [tab, setTab] = useState('')
 
@@ -26,6 +29,8 @@ const Dashboard = () => {
       </div>
       {/* profile... */}
       {tab === 'profile' && <DashProfile />}
+      {/* posts... */}
+      {user.IsAdmin && tab === 'posts' && <DashPosts />}
     </div>
   )
 }

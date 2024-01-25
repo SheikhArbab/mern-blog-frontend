@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const authApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['users'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://mern-blog-server-olive.vercel.app/',
+  baseQuery: fetchBaseQuery({ 
+    baseUrl: 'https://mern-blog-server-ten.vercel.app/',
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
