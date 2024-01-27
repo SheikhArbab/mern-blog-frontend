@@ -9,7 +9,17 @@ import { useUserMutation } from '../redux/services/auth'
 import { currentUser } from '../redux/features/authSlice'
 import { useDispatch } from 'react-redux';
 
-const SignIn = () => {
+const SignIn = ({setProgress}) => {
+
+
+  React.useEffect(() => {
+    // document.title = `Dashboard | SuperTech Institute of Computer Sciences`;
+    setProgress(20)
+    setTimeout(() => {
+
+      setProgress(100)
+    }, 400);
+  }, [])
 
 
   const dispatch = useDispatch()

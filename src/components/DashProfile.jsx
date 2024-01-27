@@ -1,25 +1,44 @@
 import React, { useState, useRef } from 'react';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { Label, TextInput, Button, Spinner } from 'flowbite-react';
-import { BiSolidShow, BiSolidHide, BiCamera } from 'react-icons/bi';
+import { BiSolidShow, BiSolidHide, BiCamera, } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
-import { useUpdateUserMutation } from '../redux/services/auth'
+import { useUpdateUserMutation, useDeleteUserMutation } from '../redux/services/auth'
 import { currentUser } from '../redux/features/authSlice'
+import { Label, TextInput, Button, Spinner, Alert, Modal } from 'flowbite-react';
+import { HiOutlineInformationCircle } from "react-icons/hi2";
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const DashProfile = () => {
-  const { user } = useSelector((state) => state.auth);
+
+
+
+  const { user, token } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch()
 
   const [showPass, setShowPass] = useState(false);
- 
+
+  const [showModal, setShowModal] = useState(false)
+
   const fileRef = useRef(null);
 
+  const [anyRes, setAnyRes] = useState('')
 
-  const [updateUser, { isLoading }] = useUpdateUserMutation()
+  React.useEffect(() => {
+
+    setTimeout(() => {
+      setAnyRes('')
+    }, 2000);
+
+  }, [anyRes])
+
+  const [updateUser, { isLoading, isError }] = useUpdateUserMutation()
+
+
+
+  const [deleteUser] = useDeleteUserMutation();
 
   const {
     handleChange,
@@ -41,20 +60,32 @@ const DashProfile = () => {
       email: Yup.string().email('Invalid email address').required('Email is required'),
     }),
     onSubmit: async (formValues) => {
+      let updateData = formValues; // Default to formValues
+
+      // Check if the profile picture is the same as the user's current profile picture
       if (formValues.profilePicture === user.profilePicture) {
+        // If the profile picture is the same, exclude it from the update
         const { profilePicture, ...restOfData } = formValues;
-        formValues = restOfData;
+        updateData = restOfData;
+
       }
 
       try {
-        await updateUser({ updateData: formValues, userId: user._id });
+        const res = await updateUser({ updateData, userId: user._id });
 
+        if (res.error && res.error.data && res.error.data.message) {
+          setAnyRes(res.error.data.message);
+        } else if (res.data && res.data.message) {
+          setAnyRes(res.data.message);
+          const { updatedUser } = res.data;
+          dispatch(currentUser({ user: updatedUser, token }));
+        }
       } catch (error) {
         console.error('Error during form submission:', error);
       }
     },
 
-  });
+  })
 
   const handleFileChange = (event) => {
     const file = event.currentTarget.files[0];
@@ -69,8 +100,37 @@ const DashProfile = () => {
     }
   };
 
+
+
+  const handleDeleteUser = async () => {
+    setShowModal(false)
+
+    await deleteUser(user._id)
+    dispatch(currentUser({ user:null, token:null }));
+  };
+
+
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
+
+
+      {
+        !isLoading && anyRes &&
+        <div className='relative'>
+          <Alert color={`${isError ? 'failure' : 'success'}`} className='mt-5'>
+            {anyRes}
+          </Alert>
+          <span
+            onClick={() => {
+              setAnyRes('')
+            }}
+            className='absolute top-0 right-3 font-bold cursor-pointer text-teal-900'>x</span>
+        </div>
+
+      }
+
+
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
       <form className="flex flex-col" onSubmit={handleSubmit}>
 
@@ -174,7 +234,7 @@ const DashProfile = () => {
               className={` mt-4  w-full h-10`}
               gradientDuoTone={'purpleToPink'}
             >
-              {isLoading ? <Spinner color={'purple'} /> : "Create a post"}
+              Create a post
 
             </Button>
           </Link>
@@ -182,9 +242,33 @@ const DashProfile = () => {
 
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
-        <span className='cursor-pointer'>Delete Account</span>
+        <span
+          onClick={() => {
+            setShowModal(true)
+          }}
+          className='cursor-pointer'>Delete Account</span>
         <span className='cursor-pointer' onClick={() => dispatch(currentUser({ user: '', token: '' }))}>Sign Out</span>
       </div>
+      <Modal show={showModal} onClose={() => setShowModal(false)} popup size={'md'}>
+
+        <Modal.Header />
+        <Modal.Body>
+          <div className='text-center'>
+            <HiOutlineInformationCircle className='w-14 h-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
+            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>Are you sure you want to delete your account?</h3>
+            <div className='flex gap-4 justify-center'>
+              <Button color='failure' onClick={handleDeleteUser}>
+                Yes, I'm sure
+              </Button>
+              <Button color='gray' onClick={() => setShowModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+
+        </Modal.Body>
+
+      </Modal>
     </div>
   );
 };

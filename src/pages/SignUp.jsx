@@ -6,7 +6,17 @@ import { Label, TextInput, Button, Spinner, Alert } from 'flowbite-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BiSolidShow, BiSolidHide } from "react-icons/bi";
 import { useCreateUserMutation } from '../redux/services/auth'
-const SignUp = () => {
+const SignUp = ({setProgress}) => {
+
+
+  React.useEffect(() => {
+    // document.title = `Dashboard | SuperTech Institute of Computer Sciences`;
+    setProgress(20)
+    setTimeout(() => {
+
+      setProgress(100)
+    }, 400);
+  }, [])
 
 
 
@@ -33,8 +43,7 @@ const SignUp = () => {
     }),
     onSubmit: async (formValues) => {
       try {
-        const res = await createUser(formValues);
-console.log(res);
+        const res = await createUser(formValues); 
         if (res.error && res.error.data && res.error.data.message) {
           setAnyRes(res.error.data.message);
         } else if (res.data && res.data.message) {
@@ -79,7 +88,7 @@ console.log(res);
                 onClick={() => {
                   setAnyRes('')
                 }}
-                className='absolute top-0 right-3 font-bold cursor-pointer'>x</span>
+                className='absolute top-0 right-3 font-bold cursor-pointer text-teal-900'>x</span>
             </div>
 
           }

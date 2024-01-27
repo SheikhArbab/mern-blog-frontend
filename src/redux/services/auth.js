@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['users'],
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'https://mern-blog-server-ten.vercel.app/',
+    baseUrl: 'http://localhost:4000/',
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
@@ -50,7 +50,7 @@ export const authApi = createApi({
     }),
     deleteUser: builder.mutation({
       query: (userId) => ({
-        url: `auth/signin/delete/${userId}`,
+        url: `delete/${userId}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['users'],

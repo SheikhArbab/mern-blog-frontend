@@ -1,27 +1,37 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
+const baseURL = 'http://localhost:4000/';
+
 export const postsApi = createApi({
   reducerPath: 'postsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://mern-blog-server-ten.vercel.app/',
+    baseUrl: baseURL,
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
-      headers.set('Content-Type', 'application/json');
-      return headers;
+      const newHeaders = new Headers(headers);
+      newHeaders.set('Content-Type', 'application/json');
+      return newHeaders;
     },
   }),
   endpoints: (builder) => ({
+    getPostById: builder.query({
+      query: (id) => ({
+        url: `get/post/${id}`,
+        method: 'GET'
+      }),
+      invalidatesTags: ['posts'],
+    }),
     getPosts: builder.query({
-      query: ({userId}) => ({
+      query: ({ userId }) => ({
         url: `get/posts?userId=${userId}`,
-        method: 'GET' 
+        method: 'GET'
       }),
       invalidatesTags: ['posts'],
     }),
     createPost: builder.mutation({
       query: (newPost) => ({
-        url: `create/post`,
+        url: 'create/post',
         method: 'POST',
         body: newPost,
       }),
@@ -29,17 +39,23 @@ export const postsApi = createApi({
     }),
 
     updatePost: builder.mutation({
-      query: ({ userId, updateData }) => ({
-        url: `update/post/${userId}`,
-        method: 'PUT',
-        body: updateData,
-      }),
-      invalidatesTags: ['posts'],
+      query: ({ userId, updateData }) => {
+        // Log statement before sending the update request
+        console.log(`Updating post for user ${userId} with data:`, updateData);
+    
+        return {
+          url: `update/post/${userId}`,
+          method: 'PUT',
+          body: updateData,
+        };
+      }, 
     }),
+    
+
 
     deletePost: builder.mutation({
-      query: (postId) => ({
-        url: `delete/post/${postId}`,
+      query: (id) => ({
+        url: `delete/post/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['posts'],
@@ -47,4 +63,10 @@ export const postsApi = createApi({
   }),
 });
 
-export const { useGetPostsQuery , useCreatePostMutation, useUpdatePostMutation, useDeletePostMutation } = postsApi;
+export const {
+  useGetPostsQuery,
+  useCreatePostMutation,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+  useGetPostByIdQuery
+} = postsApi;
