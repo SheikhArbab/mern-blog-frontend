@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseURL = 'http://localhost:4000/';
+const baseURL = 'https://mern-blog-server-ten.vercel.app/';
+// const baseURL = 'http://localhost:4000/';
 
 export const postsApi = createApi({
   reducerPath: 'postsApi',
@@ -15,6 +16,13 @@ export const postsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
+    getPostBySlug: builder.query({
+      query: (slug) => ({
+        url: `get/posts/?slug=${slug}`,
+        method: 'GET'
+      }),
+      invalidatesTags: ['posts'],
+    }),
     getPostById: builder.query({
       query: (id) => ({
         url: `get/post/${id}`,
@@ -40,17 +48,15 @@ export const postsApi = createApi({
 
     updatePost: builder.mutation({
       query: ({ userId, updateData }) => {
-        // Log statement before sending the update request
-        console.log(`Updating post for user ${userId} with data:`, updateData);
-    
+
         return {
           url: `update/post/${userId}`,
           method: 'PUT',
           body: updateData,
         };
-      }, 
+      },
     }),
-    
+
 
 
     deletePost: builder.mutation({
@@ -68,5 +74,6 @@ export const {
   useCreatePostMutation,
   useUpdatePostMutation,
   useDeletePostMutation,
-  useGetPostByIdQuery
+  useGetPostByIdQuery,
+  useGetPostBySlugQuery
 } = postsApi;

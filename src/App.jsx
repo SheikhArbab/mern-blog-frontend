@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { RootLayout, PrivateLayout, AdminLayout, LogoutLayout } from './layout/index';
-import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost, UpdatePost } from './pages/index';
+import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost, UpdatePost,Post } from './pages/index';
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
 import { currentUser } from './redux/features/authSlice';
 import { jwtDecode } from "jwt-decode";
@@ -37,26 +37,22 @@ const App = () => {
       <Route path="/" element={<RootLayout />}>
         <Route index element={<Home setProgress={setProgress} />} />
         <Route path="/about" element={<About setProgress={setProgress} />} />
+        <Route path="/post/:slug" element={<Post setProgress={setProgress} />} />
         <Route path="/projects" element={<Projects setProgress={setProgress} />} />
 
 
         <Route element={<LogoutLayout />} >
-
           <Route path="/sign-in" element={<SignIn setProgress={setProgress} />} />
           <Route path="/sign-up" element={<SignUp setProgress={setProgress} />} />
-
         </Route>
 
 
         <Route element={<PrivateLayout />} >
-
           <Route path="/dashboard" element={<Dashboard setProgress={setProgress} />} />
 
           <Route element={<AdminLayout />} >
-
             <Route path="/dashboard/create-post" element={<CreatePost setProgress={setProgress} />} />
             <Route path="/update-post/:id" element={<UpdatePost setProgress={setProgress} />} />
-
           </Route>
 
 

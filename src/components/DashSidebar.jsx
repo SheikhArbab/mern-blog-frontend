@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { HiUser, HiArrowSmRight, HiDocumentText } from 'react-icons/hi'
+import { IoLogOut } from "react-icons/io5";
+import { HiUser,  HiDocumentText,HiUserGroup } from 'react-icons/hi'
 import { Sidebar } from 'flowbite-react'
 import { currentUser } from '../redux/features/authSlice'
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,10 +53,22 @@ const DashSidebar = () => {
                             </Sidebar.Item>
                         </Link>
                     }
+                    {
+                        user.IsAdmin && <Link
+                            to={'/dashboard?tab=users'}>
+                            <Sidebar.Item
+                                active={tab === 'users'}
+                                icon={HiUserGroup} 
+                                labelColor='dark'
+                                as={'div'}  >
+                               Users
+                            </Sidebar.Item>
+                        </Link>
+                    }
                     <div
                         onClick={() => dispatch(currentUser({ user: '', token: '' }))}>
                         <Sidebar.Item
-                            icon={HiArrowSmRight}
+                            icon={IoLogOut }
                             className="cursor-pointer"
                             as={'div'}>
                             Sign Out

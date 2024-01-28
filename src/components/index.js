@@ -1,4 +1,5 @@
 export {default as DashPosts} from "./DashPosts";
+export {default as DashUser} from "./DashUser";
 export {default as DashSidebar} from "./DashSidebar";
 export {default as DashProfile} from "./DashProfile";
 export {default as ThemeProvider} from "./ThemeProvider";

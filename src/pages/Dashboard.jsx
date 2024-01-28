@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
-import { DashSidebar, DashProfile,DashPosts } from '../components/index'
+import { DashSidebar, DashProfile,DashPosts,DashUser } from '../components/index'
 import { useSelector } from 'react-redux';
 
 const Dashboard = ({setProgress}) => {
@@ -38,6 +38,8 @@ const Dashboard = ({setProgress}) => {
       {tab === 'profile' && <DashProfile />}
       {/* posts... */}
       {user.IsAdmin && tab === 'posts' && <DashPosts />}
+      {/* users... */}
+      {user.IsAdmin && tab === 'users' && <DashUser />}
     </div>
   )
 }

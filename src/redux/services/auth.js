@@ -3,8 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const authApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['users'],
-  baseQuery: fetchBaseQuery({ 
-    baseUrl: 'http://localhost:4000/',
+  baseQuery: fetchBaseQuery({
+    // baseUrl: 'http://localhost:4000/',
+    baseUrl: 'https://mern-blog-server-ten.vercel.app/',
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
@@ -20,6 +21,12 @@ export const authApi = createApi({
         body: user,
       }),
     }),
+    getUsers: builder.query({
+      query: () => ({
+        url: `getusers`,
+        method: 'GET',
+      }),
+    }),
     signout: builder.mutation({
       query: () => ({
         url: 'sign-out',
@@ -27,7 +34,7 @@ export const authApi = createApi({
       }),
     }),
     createUser: builder.mutation({
-      query: (newUser) => { 
+      query: (newUser) => {
         return {
           url: `sign-up`,
           method: 'POST',
@@ -67,9 +74,10 @@ export const authApi = createApi({
 
 export const {
   useCreateUserMutation,
-  useUserMutation,
+  useDeleteUserMutation, 
   useGoogleUserMutation,
-  useDeleteUserMutation,
+  useUserMutation,
+  useSignoutMutation,
   useUpdateUserMutation,
-  useSignoutMutation
+  useGetUsersQuery
 } = authApi;
