@@ -33,10 +33,9 @@ const DashUser = () => {
 
   if (isPostFetch) {
     return (
-      <div className='flex h-screen w-full items-center justify-center flex-col text-4xl gap-1'>
-        <Spinner className='h-20 w-20' /> Loading...
-      </div>
-    );
+      <div className='w-full h-screen flex items-center justify-center '>
+      <Spinner size={'xl'} />
+  </div>    );
   }
 
   return (

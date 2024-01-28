@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table, Alert, Spinner } from 'flowbite-react';
 import { HiOutlineInformationCircle } from "react-icons/hi2";
-import { useGetPostsQuery } from '../redux/services/post';
+import { useGetPostsQuery ,useDeletePostMutation} from '../redux/services/post';
 import { FaTrash, FaRegEdit } from "react-icons/fa";
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { useDeletePostMutation } from "../redux/services/post"
+import { Link } from 'react-router-dom'; 
 import '/empty.webp'
 
 const DashPosts = () => {
@@ -51,11 +50,9 @@ const DashPosts = () => {
 
 
   if (isPostFetch) {
-    return <div
-      className='flex h-screen w-full items-center justify-center flex-col text-4xl gap-1'>
-      <Spinner
-        className='h-20 w-20' /> Loading...
-    </div>;
+    return <div className='w-full h-screen flex items-center justify-center '>
+      <Spinner size={'xl'} />
+    </div>
   }
 
 

@@ -4,17 +4,18 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background:transparent;
   border-radius: 12px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
+  border-radius: 25px;
   background: #888;
 }
 
@@ -37,6 +38,10 @@ body {
 
 }
 
+.post-content { 
+  text-wrap: wrap !important;
+  overflow: hidden;
+}
 .post-content p {
   margin-bottom: 0.5rem;
 }
@@ -61,4 +66,7 @@ text-decoration: none;
 
 .post-content a:hover { 
 text-decoration:underline;
+}
+.dark .post-content a{
+  color: red !important;
 }

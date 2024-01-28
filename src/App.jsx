@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import LoadingBar from 'react-top-loading-bar'
 import { RootLayout, PrivateLayout, AdminLayout, LogoutLayout } from './layout/index';
-import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost, UpdatePost,Post } from './pages/index';
+import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost, UpdatePost, Post } from './pages/index';
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
 import { currentUser } from './redux/features/authSlice';
-import { jwtDecode } from "jwt-decode";
-import LoadingBar from 'react-top-loading-bar'
 import { useDispatch, useSelector } from 'react-redux';
+import { jwtDecode } from "jwt-decode";
 
 const App = () => {
 
@@ -35,6 +35,7 @@ const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
+
         <Route index element={<Home setProgress={setProgress} />} />
         <Route path="/about" element={<About setProgress={setProgress} />} />
         <Route path="/post/:slug" element={<Post setProgress={setProgress} />} />

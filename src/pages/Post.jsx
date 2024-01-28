@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useGetPostBySlugQuery } from '../redux/services/post';
 import { Spinner, Button } from 'flowbite-react';
+import { CallToAction,CommentsSection } from '../components/index'
 
 const Post = ({ setProgress }) => {
     useEffect(() => {
@@ -45,13 +46,18 @@ const Post = ({ setProgress }) => {
 
             <div className='flex items-center justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs'>
                 <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
-                <span>{post && (post.content.length / 1000).toFixed(0) } mins read</span>
+                <span>{post && (post.content.length / 1000).toFixed(0)} mins read</span>
             </div>
 
 
-<div className='p-3 max-w-2xl mx-auto w-full post-content' dangerouslySetInnerHTML={{__html:post && post.content}}>
-</div>
+            <div
+                className='p-3 max-w-2xl mx-auto w-full post-content'
+                dangerouslySetInnerHTML={{ __html: post && post.content }} />
 
+           <div className='max-w-2xl mx-auto w-full '>
+           <CallToAction />
+           </div>
+           <CommentsSection postId={post?._id} />
         </main>
     );
 };

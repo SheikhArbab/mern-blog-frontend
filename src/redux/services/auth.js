@@ -4,8 +4,8 @@ export const authApi = createApi({
   reducerPath: 'userApi',
   tagTypes: ['users'],
   baseQuery: fetchBaseQuery({
-    // baseUrl: 'http://localhost:4000/',
-    baseUrl: 'https://mern-blog-server-ten.vercel.app/',
+    baseUrl: 'http://localhost:4000/',
+    // baseUrl: 'https://mern-blog-server-ten.vercel.app/',
     credentials: 'include',
     mode: 'cors',
     prepareHeaders: (headers) => {
@@ -24,6 +24,12 @@ export const authApi = createApi({
     getUsers: builder.query({
       query: () => ({
         url: `getusers`,
+        method: 'GET',
+      }),
+    }),
+    getUserById: builder.query({
+      query: (id) => ({
+        url: `getusers/${id}`,
         method: 'GET',
       }),
     }),
@@ -79,5 +85,6 @@ export const {
   useUserMutation,
   useSignoutMutation,
   useUpdateUserMutation,
-  useGetUsersQuery
+  useGetUsersQuery,
+  useGetUserByIdQuery
 } = authApi;

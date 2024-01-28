@@ -6,3 +6,7 @@ export {default as ThemeProvider} from "./ThemeProvider";
 export {default as Header} from "./Header";
 export {default as Footer} from "./Footer";
 export {default as OAuth} from "./OAuth";
+export {default as CallToAction} from "./CallToAction";
+export {default as CommentsSection} from "./CommentsSection";
+export {default as Comment} from "./Comment";
+export {default as ScrollTop} from "./ScrollTop";
