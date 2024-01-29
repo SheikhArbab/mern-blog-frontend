@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import LoadingBar from 'react-top-loading-bar'
 import { RootLayout, PrivateLayout, AdminLayout, LogoutLayout } from './layout/index';
-import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost, UpdatePost, Post } from './pages/index';
+import { Home, About, Dashboard, SignIn, SignUp, Projects, CreatePost, UpdatePost, Post,Search } from './pages/index';
 import { createBrowserRouter, createRoutesFromElements, RouterProvider, Route } from "react-router-dom";
 import { currentUser } from './redux/features/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,6 +39,7 @@ const App = () => {
         <Route index element={<Home setProgress={setProgress} />} />
         <Route path="/about" element={<About setProgress={setProgress} />} />
         <Route path="/post/:slug" element={<Post setProgress={setProgress} />} />
+        <Route path="/search" element={<Search setProgress={setProgress} />} />
         <Route path="/projects" element={<Projects setProgress={setProgress} />} />
 
 
