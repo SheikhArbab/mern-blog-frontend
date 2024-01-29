@@ -1,66 +1,74 @@
-import React, { useEffect, useState } from 'react'
-import { Comment } from '../components/index'
+import React, { useEffect, useState } from 'react';
+import { Comment } from '../components/index';
 import * as Yup from 'yup';
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 import { Textarea, Button, Alert, Spinner } from 'flowbite-react';
-import { useNewCommentMutation, useGetCommentsQuery } from '../redux/services/comment'
+import {
+    useNewCommentMutation,
+    useGetCommentsQuery
+} from '../redux/services/comment';
 
 const CommentsSection = ({ postId }) => {
+    const { user } = useSelector((state) => state.auth); 
 
-    const { user } = useSelector(state => state.auth);
-
-    const [newComment, { isLoading, isError }] = useNewCommentMutation()
-
-    const { data } = useGetCommentsQuery(postId)
-
-    const [getComments, setGetComments] = useState([])
+    const [newComment, { isLoading, isError }] = useNewCommentMutation(); 
+    const { data, refetch } = useGetCommentsQuery(postId);
+    const [getComments, setGetComments] = useState([]);
 
     useEffect(() => {
-
         if (data) {
-            setGetComments(data)
+            setGetComments(data);
         }
+    }, [data]);
 
-    }, [getComments])
+    const [anyRes, setAnyRes] = useState('');
+    const [coms, setComs] = useState(false);
 
-
-    const [anyRes, setAnyRes] = useState('')
-
-    const { handleChange, handleSubmit, handleBlur, touched, errors, values, resetForm } = useFormik({
+    const {
+        handleChange,
+        handleSubmit,
+        handleBlur,
+        touched,
+        errors,
+        values,
+        resetForm
+    } = useFormik({
         initialValues: {
-            comment: ""
+            comment: ''
         },
         validationSchema: Yup.object({
             comment: Yup.string()
-                .required('Comments is required')
+                .required('Comment is required')
                 .min(3, 'Comment must be at least 3 characters')
                 .max(1000, 'Comment cannot exceed 1000 characters')
         }),
         onSubmit: async (formValues) => {
             try {
-
-                const res = await newComment({ content: formValues.comment, userId: user._id, postId });
+                const res = await newComment({
+                    content: formValues.comment,
+                    userId: user._id,
+                    postId
+                });
 
                 if (res.error && res.error.data && res.error.data.message) {
                     setAnyRes(res.error.data.message);
                 } else if (res.data && res.data.message) {
-                    resetForm()
+                    resetForm();
+                    refetch();
                     setAnyRes(res.data.message);
-
                 }
-
             } catch (error) {
-                console.error('Error during user creation:', error);
+                console.error('Error during comment creation:', error);
             }
         }
-
-
     });
 
+ 
     return (
-        <div className='max-w-2xl mx-auto w-full p-3 '>
+        <div className="max-w-2xl mx-auto w-full p-3 ">
+
             {
                 user ? (
                     <div className='flex items-center gap-1 my-5 text-gray-500 text-sm '>
@@ -91,6 +99,7 @@ const CommentsSection = ({ postId }) => {
                 </div>
 
             }
+
             {user && (
 
                 <form className='border border-teal-500 rounded-md p-3 ' onSubmit={handleSubmit}>
@@ -115,21 +124,36 @@ const CommentsSection = ({ postId }) => {
                 </form>
 
             )}
-            {getComments.length === 0 ? (
-                <p className='text-sm my-5'>No comments yet!</p>
-            ) : (
-                <>
-                    <div className='text-sm my-5 flex items-center gap-1'>
-                        <p>Comments</p>
-                        <div className='border border-gray-400 py-1 px-2 rounded-md'>
-                            <p>{getComments.length}</p>
-                        </div>
-                    </div>
-                    {getComments.map(comment => (
-                        <Comment comment={comment} key={comment._id} />
-                    ))}
-                </>
-            )}
+            <Button
+                onClick={() => {
+                    refetch()
+                    setComs(!coms)
+                }}
+                className='mx-auto mt-5'
+                outline
+                gradientDuoTone={'purpleToBlue'}>{coms ? "Hide comments" : "Show comments"}</Button>
+            {
+                coms &&
+
+                <div>
+                    {getComments.length === 0 ? (
+                        <p className='text-sm my-5'>No comments yet!</p>
+                    ) : (
+                        <>
+                            <div className='text-sm my-5 flex items-center gap-1'>
+                                <p>Comments</p>
+                                <div className='border border-gray-400 py-1 px-2 rounded-md'>
+                                    <p>{getComments.length}</p>
+                                </div>
+                            </div>
+                            {getComments.map(comment => (
+                                <Comment  comment={comment} key={comment._id} currentUser={user} />
+                            ))}
+                        </>
+                    )}
+                </div>
+
+            }
         </div>
     )
 }

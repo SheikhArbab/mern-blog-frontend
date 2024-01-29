@@ -1,58 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Modal, Table, Alert, Spinner } from 'flowbite-react';
-import { HiOutlineInformationCircle } from "react-icons/hi2";
-import { useGetPostsQuery ,useDeletePostMutation} from '../redux/services/post';
-import { FaTrash, FaRegEdit } from "react-icons/fa";
+import { HiOutlineInformationCircle } from 'react-icons/hi2';
+import { useGetPostsQuery, useDeletePostMutation } from '../redux/services/post';
+import { FaTrash, FaRegEdit } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'; 
-import '/empty.webp'
+import { Link } from 'react-router-dom';
+import emptyImage from '/empty.webp';
 
 const DashPosts = () => {
-  const { user } = useSelector(state => state.auth);
-  const { data, refetch, isLoading: isPostFetch } = useGetPostsQuery({ userId: user._id });
+  const { user } = useSelector((state) => state.auth);
+  const { data, refetch, isLoading: isPostFetch } = useGetPostsQuery({ userId: user?._id });
   const [userPosts, setUserPosts] = useState([]);
 
-
   const [deletePost, { isLoading, isError }] = useDeletePostMutation();
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [postId, setPostId] = useState('');
+  const [anyRes, setAnyRes] = useState();
 
-  const [postId, setPostId] = useState('')
-
-  const [anyRes, setAnyRes] = useState()
-
-  const fetchPosts = async () => {
-    try {
-      setUserPosts(data.posts);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
   useEffect(() => {
-    fetchPosts();
+    if (data) {
+      setUserPosts(data.posts);
+    }
   }, [data]);
 
   const handleDeletePost = async () => {
-    setShowModal(false)
-    const res = await deletePost(postId)
+    setShowModal(false);
+    const res = await deletePost(postId);
     if (res.error && res.error.data && res.error.data.message) {
-      refetch()
+      refetch();
       setUserPosts(data.posts);
       setAnyRes(res.error.data.message);
     } else if (res.data && res.data.message) {
-      refetch()
+      refetch();
       setUserPosts(data.posts);
-
       setAnyRes(res.data.message);
-
     }
-  }
-
-
+  };
 
   if (isPostFetch) {
-    return <div className='w-full h-screen flex items-center justify-center '>
-      <Spinner size={'xl'} />
-    </div>
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <Spinner size={'xl'} />
+      </div>
+    );
   }
 
 

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { IoLogOut } from "react-icons/io5";
-import { HiUser,  HiDocumentText,HiUserGroup } from 'react-icons/hi'
-import { Sidebar } from 'flowbite-react'
+import { HiUser, HiDocumentText, HiUserGroup } from 'react-icons/hi'
+import { Button, Sidebar } from 'flowbite-react'
 import { currentUser } from '../redux/features/authSlice'
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, Link } from 'react-router-dom';
+import { IoCloseOutline } from "react-icons/io5";
 
-const DashSidebar = () => {
+const DashSidebar = ({ toggle, setToggle }) => {
 
 
     const location = useLocation()
@@ -28,6 +29,9 @@ const DashSidebar = () => {
 
     return (
         <Sidebar className='w-full md:w-56'>
+            <Button className='md:hidden mb-4' onClick={() => setToggle(!toggle)}>
+            <IoCloseOutline  />
+            </Button>
             <Sidebar.Items>
                 <Sidebar.ItemGroup className='flex flex-col gap-1'>
                     <Link
@@ -46,7 +50,7 @@ const DashSidebar = () => {
                             to={'/dashboard?tab=posts'}>
                             <Sidebar.Item
                                 active={tab === 'posts'}
-                                icon={HiDocumentText} 
+                                icon={HiDocumentText}
                                 labelColor='dark'
                                 as={'div'}  >
                                 Posts
@@ -58,17 +62,17 @@ const DashSidebar = () => {
                             to={'/dashboard?tab=users'}>
                             <Sidebar.Item
                                 active={tab === 'users'}
-                                icon={HiUserGroup} 
+                                icon={HiUserGroup}
                                 labelColor='dark'
                                 as={'div'}  >
-                               Users
+                                Users
                             </Sidebar.Item>
                         </Link>
                     }
                     <div
                         onClick={() => dispatch(currentUser({ user: '', token: '' }))}>
                         <Sidebar.Item
-                            icon={IoLogOut }
+                            icon={IoLogOut}
                             className="cursor-pointer"
                             as={'div'}>
                             Sign Out

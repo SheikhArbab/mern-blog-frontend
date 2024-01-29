@@ -1,10 +1,10 @@
 import React from 'react'
+import { CallToAction } from '../components/index'
 
 const Projects = ({setProgress}) => {
 
 
-  React.useEffect(() => {
-    // document.title = `Dashboard | SuperTech Institute of Computer Sciences`;
+  React.useEffect(() => { 
     setProgress(20)
     setTimeout(() => {
 
@@ -12,8 +12,10 @@ const Projects = ({setProgress}) => {
     }, 400);
   }, [])
   return (
-    <div>
-      Projects
+    <div className='min-h-screen max-w-2xl mx-auto flex justify-center items-center flex-col gap-6 p-3'>
+    <h1 className='text-3xl font-semibold'>Projects</h1>
+    <p className='text-md text-gray-500'>Build fun and engaging projects while learning HTML, CSS and Javascript!</p>
+    <CallToAction />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navbar, TextInput, Button, Dropdown, Avatar } from 'flowbite-react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -15,6 +15,8 @@ const Header = () => {
 
     const { user } = useSelector(state => state.auth)
     const { theme } = useSelector(state => state.theme)
+
+    const [searchTerm, setSearchTerm] = useState('')
 
     const handleLogOut = () => {
         dispatch(currentUser({ user: '', token: '' }))

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
-import { DashSidebar, DashProfile,DashPosts,DashUser } from '../components/index'
+import { DashSidebar, DashProfile, DashPosts, DashUser } from '../components/index'
 import { useSelector } from 'react-redux';
+import { Button } from 'flowbite-react';
+import { RxHamburgerMenu } from "react-icons/rx";
 
-const Dashboard = ({setProgress}) => {
+const Dashboard = ({ setProgress }) => {
 
- 
+
 
   const location = useLocation()
 
-  const {user} = useSelector(state => state.auth)
+  const { user } = useSelector(state => state.auth)
 
   const [tab, setTab] = useState('')
+  const [toggle, setToggle] = useState(true)
 
-  useEffect(() => {
-    // document.title = `Dashboard | SuperTech Institute of Computer Sciences`;
+  useEffect(() => { 
     setProgress(20)
     setTimeout(() => {
 
@@ -30,9 +32,13 @@ const Dashboard = ({setProgress}) => {
 
   return (
     <div className='min-h-screen flex flex-col md:flex-row relative items-start'>
-      <div className='md:w-56 md:sticky top-0 z-50  h-screen'>
+
+      <Button className='md:hidden mt-5 ml-2'  onClick={() => setToggle(!toggle)}>
+      <RxHamburgerMenu />
+      </Button>
+      <div className={`${toggle && '-translate-x-[1000px] '} md:w-56 w-full md:sticky absolute duration-300 transition-all left-0 md:-translate-x-[0px] top-0 z-50  h-screen`} >
         {/* sidebar */}
-        <DashSidebar />
+        <DashSidebar  toggle={toggle} setToggle={setToggle}/>
       </div>
       {/* profile... */}
       {tab === 'profile' && <DashProfile />}
