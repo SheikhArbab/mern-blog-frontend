@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseURL = 'http://localhost:4000/';
+// const baseURL = 'http://localhost:4000/';
+const baseURL = 'https://mern-blog-server-ten.vercel.app/';
 
 export const postsApi = createApi({
   reducerPath: 'postsApi',
